@@ -171,6 +171,155 @@ Todos los servicios en `docker-compose.yml` tienen healthchecks configurados par
 
 ---
 
+# Comandos Útiles
+
+---
+
+## Comandos Básicos de Docker Compose
+
+```bash
+docker-compose up --build -d
+```
+Construye y levanta todos los servicios en segundo plano.
+
+```bash
+docker-compose down
+```
+Detiene y elimina los contenedores.
+
+```bash
+docker-compose down -v
+```
+Detiene y elimina los contenedores **y** los volúmenes asociados (útil para resetear bases de datos).
+
+```bash
+docker-compose ps
+```
+Muestra el estado de todos los servicios.
+
+```bash
+docker-compose logs -f
+```
+Ver los logs en tiempo real de todos los servicios.
+
+```bash
+docker-compose logs -f user-service
+```
+Ver logs específicos del servicio `user-service`.
+
+---
+
+## Comandos para Inspección y Debug
+
+```bash
+docker ps
+```
+Lista todos los contenedores activos.
+
+```bash
+docker inspect <container_id_or_name>
+```
+Muestra detalles completos de un contenedor (estado, IP, puertos, etc).
+
+```bash
+docker exec -it user-service bash
+```
+Abre una terminal interactiva dentro del contenedor `user-service`.
+
+```bash
+docker exec -it db-users psql -U user -d usersdb
+```
+Conecta directamente al PostgreSQL del user-service.
+
+```bash
+docker stats
+```
+Muestra el uso de CPU, RAM y red por contenedor (monitor tipo `htop`).
+
+---
+
+## Healthchecks y APIs
+
+```bash
+curl http://localhost/api/users/health
+```
+Verifica el estado del servicio de usuarios.
+
+```bash
+curl http://localhost/api/tasks/health
+```
+Verifica el estado del servicio de tareas.
+
+---
+
+## Imágenes y Volúmenes
+
+```bash
+docker images
+```
+Lista todas las imágenes locales.
+
+```bash
+docker volume ls
+```
+Lista todos los volúmenes.
+
+```bash
+docker volume rm <volume_name>
+```
+Elimina un volumen específico.
+
+---
+
+## Comandos de Redes Docker
+
+```bash
+docker network ls
+```
+Lista todas las redes Docker.
+
+```bash
+docker network inspect app-network
+```
+Muestra información detallada de la red `app-network`.
+
+```bash
+docker network connect app-network <container_id>
+```
+Conecta un contenedor a la red `app-network`.
+
+```bash
+docker network disconnect app-network <container_id>
+```
+Desconecta un contenedor de la red.
+
+```bash
+docker exec -it task-service ping user-service
+```
+Verifica conectividad de red entre microservicios.
+
+```bash
+docker exec -it user-service curl http://task-service:3000/tasks/health
+```
+Prueba HTTP entre servicios internamente en Docker.
+
+```bash
+docker network create app-network
+```
+Crea una red bridge personalizada manualmente.
+
+```bash
+docker run -dit --name test-container --network app-network alpine
+```
+Contenedor de prueba conectado a la red `app-network`.
+
+```bash
+docker network rm app-network
+```
+Elimina la red (solo si no hay contenedores conectados).
+
+---
+
 ## Autor
 
 **Diego Salvador**  
