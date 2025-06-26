@@ -171,7 +171,7 @@ Todos los servicios en `docker-compose.yml` tienen healthchecks configurados par
 
 ---
 
-## 👨Autor
+## Autor
 
 **Diego Salvador**  
 Estudiante de Ingeniería Civil en Computación 
