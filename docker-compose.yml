@@ -1,0 +1,96 @@
+version: "3.8"
+
+services:
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    environment:
+      - DATABASE_URL=postgres://user:password@db-users:5432/usersdb
+    depends_on:
+      - db-users
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/users/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  task-service:
+    build: ./task-service
+    container_name: task-service
+    environment:
+      - DATABASE_URL=postgres://user:password@db-tasks:5432/tasksdb
+      - USER_SERVICE_URL=http://user-service:3000/users
+    depends_on:
+      - db-tasks
+      - user-service
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/tasks/health"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  db-users:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: usersdb
+    volumes:
+      - db_users_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d usersdb"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  db-tasks:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: tasksdb
+    volumes:
+      - db_tasks_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user -d tasksdb"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+
+  npm:
+    image: 'jc21/nginx-proxy-manager:latest'
+    container_name: nginx-proxy-manager
+    ports:
+      - "80:80"
+      - "443:443"
+      - "81:81"
+    volumes:
+      - ./data/npm:/data
+      - ./data/letsencrypt:/etc/letsencrypt
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:81"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+      
+networks:
+  app-network:
+
+volumes:
+  db_users_data:
+  db_tasks_data:

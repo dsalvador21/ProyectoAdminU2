@@ -1,0 +1,6 @@
+[19/Jun/2025:00:43:12 +0000] - 200 200 - GET http localhost "/api/users/" [Client 172.20.0.1] [Length 406] [Gzip -] [Sent-to user-service] "PostmanRuntime/7.44.1" "-"
+[19/Jun/2025:00:43:13 +0000] - 200 200 - GET http localhost "/api/users/" [Client 172.20.0.1] [Length 406] [Gzip -] [Sent-to user-service] "PostmanRuntime/7.44.1" "-"
+[19/Jun/2025:00:43:26 +0000] - 404 404 - GET http localhost "/api/usersffs" [Client 172.20.0.1] [Length 150] [Gzip 1.09] [Sent-to user-service] "PostmanRuntime/7.44.1" "-"
+[19/Jun/2025:00:43:35 +0000] - 400 400 - GET http localhost "/api/users/loco" [Client 172.20.0.1] [Length 24] [Gzip -] [Sent-to user-service] "PostmanRuntime/7.44.1" "-"
+[19/Jun/2025:00:49:08 +0000] - - 301 - GET http localhost "/api/users" [Client 172.20.0.1] [Length 166] [Gzip -] [Sent-to user-service] "PostmanRuntime/7.44.1" "-"
+[19/Jun/2025:00:49:08 +0000] - 200 200 - GET http localhost "/api/users/" [Client 172.20.0.1] [Length 406] [Gzip -] [Sent-to user-service] "PostmanRuntime/7.44.1" "http://localhost/api/users"
